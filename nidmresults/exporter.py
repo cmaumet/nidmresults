@@ -12,10 +12,10 @@ from prov.model import ProvBundle, ProvDocument
 import rdflib
 import os
 import datetime
-from nidmresults.objects.constants import *
-from nidmresults.objects.modelfitting import *
-from nidmresults.objects.contrast import *
-from nidmresults.objects.inference import *
+from objects.constants import *
+from objects.modelfitting import *
+from objects.contrast import *
+from objects.inference import *
 import uuid
 import csv
 
