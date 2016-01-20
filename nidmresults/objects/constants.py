@@ -14,6 +14,7 @@ CRYPTO = Namespace(
     "http://id.loc.gov/vocabulary/preservation/cryptographicHashFunctions#")
 FSL = Namespace("fsl", "http://purl.org/nidash/fsl#")
 SPM = Namespace("fsl", "http://purl.org/nidash/spm#")
+AFNI = Namespace("fsl", "http://purl.org/nidash/afni#")
 DCT = Namespace("dct", "http://purl.org/dc/terms/")
 OBO = Namespace("obo", "http://purl.obolibrary.org/obo/")
 DCTYPE = Namespace("dctype", "http://purl.org/dc/dcmitype/")
@@ -24,6 +25,7 @@ NFO = Namespace(
 
 # NeuroLex constants
 NLX_FSL = NLX['birnlex_2067']
+NLX_AFNI = NLX['nif-0000-00259']
 
 # NIDM constants
 FSL_FEAT_VERSION = FSL['FSL_0000005']
