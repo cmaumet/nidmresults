@@ -278,6 +278,15 @@ class NIDMExporter():
                 if alphanum_id in ttl:
                     ttl = "@prefix " + prefix + ": <" + uri + "> .\n" + ttl
                     ttl = ttl.replace(alphanum_id, prefix + ":")
+
+        prefix_file = os.path.join(os.path.dirname(__file__), 'prefixes.csv')
+        with open(prefix_file, encoding="ascii") as csvfile:
+            reader = csv.reader(csvfile)
+            for alphanum_id, prefix, uri in reader:
+                if alphanum_id in ttl:
+                    self.doc.add_namespace(Namespace(prefix, uri))
+                    ttl = "@prefix " + prefix + ": <" + uri + "> .\n" + ttl
+                    ttl = ttl.replace(alphanum_id, prefix + ":")
         return ttl
 
     def save_prov_to_files(self, showattributes=False):
@@ -294,6 +303,13 @@ class NIDMExporter():
         ttl_file = os.path.join(self.export_dir, 'nidm.ttl')
         ttl_txt = self.doc.serialize(format='rdf', rdf_format='turtle')
 
+        ttl_txt = self.use_prefixes(ttl_txt)
+        # Work-around to issue with INF value in rdflib (reported in
+        # https://github.com/RDFLib/rdflib/pull/655)
+        ttl_txt = ttl_txt.replace(' inf ', ' "INF"^^xsd:float ')
+        with open(ttl_file, 'w') as ttl_fid:
+            ttl_fid.write(ttl_txt)
+
         jsonld_file = os.path.join(self.export_dir, 'nidm.jsonld')
         jsonld_txt = self.doc.serialize(format='rdf', rdf_format='json-ld')
         with open(jsonld_file, 'w') as jsonld_fid:
@@ -308,13 +324,6 @@ class NIDMExporter():
         provn_txt = self.doc.serialize(format='provn')
         with open(provn_file, 'w') as provn_fid:
             provn_fid.write(provn_txt)
-
-        ttl_txt = self.use_prefixes(ttl_txt)
-        # Work-around to issue with INF value in rdflib (reported in
-        # https://github.com/RDFLib/rdflib/pull/655)
-        ttl_txt = ttl_txt.replace(' inf ', ' "INF"^^xsd:float ')
-        with open(ttl_file, 'w') as ttl_fid:
-            ttl_fid.write(ttl_txt)
 
         # Post-processing
         if not self.zipped:
