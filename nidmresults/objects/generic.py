@@ -16,7 +16,7 @@ import hashlib
 import uuid
 import rdflib
 import json
-from rdflib.namespace import RDF, RDFS, XSD
+import csv
 
 
 class NIDMObject(object):
@@ -29,6 +29,16 @@ class NIDMObject(object):
     def __init__(self, export_dir=None, oid=None):
         self.export_dir = export_dir
         self.p = ProvBundle()
+
+        # TODO: this is very inefficient and should only be performed for the
+        # main document in the exporter class
+        self.prefixes = dict()
+        prefix_file = os.path.join(
+            os.path.dirname(__file__), os.pardir, 'prefixes.csv')
+        with open(prefix_file, encoding="ascii") as csvfile:
+            reader = csv.reader(csvfile)
+            for alphanum_id, prefix, uri in reader:
+                self.prefixes[uri] = Namespace(prefix, uri)['']
 
         self.g = rdflib.Graph()
         if oid is None:
@@ -94,6 +104,15 @@ class NIDMObject(object):
             raise Exception('Unrecognised prov relation')
 
     def add_attributes(self, attributes):
+        if isinstance(attributes, dict):
+            attributes = [(self.prefixes.setdefault(k, k),
+                           self.prefixes.setdefault(v, v))
+                          for k, v in attributes.items()]
+        else:
+            attributes = [(self.prefixes.setdefault(k, k),
+                           self.prefixes.setdefault(v, v))
+                          for k, v in attributes]
+
         if self.prov_type == PROV['Activity']:
             self.p.activity(self.id, other_attributes=attributes)
         elif self.prov_type == PROV['Entity']:

@@ -204,10 +204,11 @@ class NIDMExporter():
         """
         Add namespaces to NIDM document.
         """
-        self.doc.add_namespace(NIDM)
+        # self.doc.add_namespace(NIDM)
         self.doc.add_namespace(NIIRI)
         self.doc.add_namespace(CRYPTO)
         self.doc.add_namespace(DCT)
+        self.use_prefixes()
 
     def _create_bundle(self, version):
         """
@@ -248,10 +249,24 @@ class NIDMExporter():
         # *** NIDM-Results Exporter (Software Agent)
         if version['num'] not in ["1.0.0", "1.1.0"]:
             self.exporter = self._get_exporter()
+            # self.add_nidm_object(self.exporter)
+
+            # self.doc.agent(self.exporter.id, other_attributes=attributes)
             self.exporter.export(self.version)
             self.doc.update(self.exporter.p)
 
             self.doc.wasAssociatedWith(self.export.id, self.exporter.id)
+
+    def add_nidm_object(self, nidm_object):
+        if nidm_object.prov_type == PROV['Activity']:
+            self.doc.activity(nidm_object.id,
+                              other_attributes=nidm_object.attributes)
+        elif nidm_object.prov_type == PROV['Entity']:
+            self.doc.entity(nidm_object.id,
+                            other_attributes=nidm_object.attributes)
+        elif nidm_object.prov_type == PROV['Agent']:
+            self.doc.agent(nidm_object.id,
+                           other_attributes=nidm_object.attributes)
 
     def _get_model_parameters_estimations(self, error_model):
         """
@@ -270,21 +285,22 @@ class NIDMExporter():
 
         return mpe
 
-    def use_prefixes(self, ttl):
+    def use_prefixes(self):
         prefix_file = os.path.join(os.path.dirname(__file__), 'prefixes.csv')
         with open(prefix_file, encoding="ascii") as csvfile:
             reader = csv.reader(csvfile)
             for alphanum_id, prefix, uri in reader:
-                if alphanum_id in ttl:
-                    ttl = "@prefix " + prefix + ": <" + uri + "> .\n" + ttl
-                    ttl = ttl.replace(alphanum_id, prefix + ":")
-        return ttl
+                self.doc.add_namespace(Namespace(prefix, uri))
+                # if alphanum_id in ttl:
+                    # ttl = "@prefix " + prefix + ": <" + uri + "> .\n" + ttl
+                    # ttl = ttl.replace(alphanum_id, prefix + ":")
 
     def save_prov_to_files(self, showattributes=False):
         """
         Write-out provn serialisation to nidm.provn.
         """
         self.doc.add_bundle(self.bundle)
+
         # provn_file = os.path.join(self.export_dir, 'nidm.provn')
         # provn_fid = open(provn_file, 'w')
         # # FIXME None
@@ -309,7 +325,7 @@ class NIDMExporter():
         with open(provn_file, 'w') as provn_fid:
             provn_fid.write(provn_txt)
 
-        ttl_txt = self.use_prefixes(ttl_txt)
+        # ttl_txt = self.use_prefixes(ttl_txt)
         # Work-around to issue with INF value in rdflib (reported in
         # https://github.com/RDFLib/rdflib/pull/655)
         ttl_txt = ttl_txt.replace(' inf ', ' "INF"^^xsd:float ')
