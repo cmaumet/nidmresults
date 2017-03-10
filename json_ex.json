@@ -1,87 +1,110 @@
 {
-"Data_grandMeanScaling": "true", > scaling type / temporal scaling instead of grand mean
-"Data_targetIntensity": "100",
-"Data_hasMRIProtocol": "nlx_FunctionalMRIprotocol",
-"ImagingInstrument_type" : "nlx_Magneticresonanceimagingscanner'",
-"Groups" :
-{
-	"Control": {
-		"Group_numberOfSubjects": "23",
-	},
-	"Patient": {
-		"Group_numberOfSubjects": "21",	
-	}
-},
-// "DesignMatrix_regressorNames": ['param_1', 'dsjkhf'],
-"DesignMatrix_location-Csv": '/Users/hasgd',
-"DesignMatrix_HRF": 'gamma_basis',
-"DesignMatrix_DriftModel": 'my_drift_model',
-"ErrorModel_hasErrorDistribution" : 'obo_normaldistribution',
-"ErrorModel_errorVarianceHomogeneous" : 'true',
-"ErrorModel_varianceMapWiseDependence" : 'nidm_IndependentParameter',
-"ErrorModel_hasErrorDependence" : 'nidm_IndependentError',
-"ErrorModel_dependenceMapWiseDependence" : 'nidm_IndependentParameter',
-"ModelParameterEstimation_withEstimationMethod": "obo_ordinaryleastsquaresestimation",
-"ParameterEstimateMaps" :
-{
-	"Sn(1) active*bf(1)": {
-		"location" : "/Users/pe1.nii.gz",
-	},
-	"ParameterEstimate-2": {
-		"location" : "/Users/pe2.nii.gz",
-	},
-	"ParameterEstimate-3": {
-		"location" : "/Users/pe3.nii.gz",
-	}
-},
-"ResidualMeanSquaresMap_location": "/Users/rms.nii.gz",
-"MaskMap_location": "/Users/mask.nii.gz",
-"GrandMeanMap_location": "/Users/grand_mean_map.nii.gz",
-"ReselsPerVoxelMap_location": "/Users/mask.nii.gz",
-"Contrasts" : 
-{
-	"listening > rest": {
-		"ContrastWeightMatrix_value" : [1,0.0],
-		"ContrastMap_atLocation": "/Users/con1.nii.gz",
-		"ContrastStandardErrorMap_atLocation": "/Users/cstd1.nii.gz",
-		"StatisticMaps" {
-			"StatisticMap_tstatistic" {
-				"StatisticMap_atLocation": "/Users/tstat1.nii.gz",
-				"StatisticMap_errorDegreesOfFreedom": "72.999",
-			},
-			"StatisticMap_zstatistic" {
-				"StatisticMap_atLocation": "/Users/zstat1.nii.gz",
-			}
+	"nidm_Data/nidm_grandMeanScaling": true,
+	"nidm_Data/nidm_targetIntensity": "10000",
+	"nidm_Data/nidm_hasMRIProtocol": "nlx_FunctionalMRIprotocol",
+	"nlx_Imaginginstrument/prov:type" : "nlx_Magneticresonanceimagingscanner'",
+	// Groups is optional > no "Groups" means single-subject analysis
+	"Groups" :
+	{
+		"Control": {
+			"obo_studygrouppopulation/nidm_numberOfSubjects": "23",
+		},
+		"Patient": {
+			"obo_studygrouppopulation/nidm_numberOfSubjects": "21",	
 		}
 	},
-},
-"Inferences" : 
-{
-	"ClusterDefinitionCriteria_connectivityCriterion": "6",
-	"listening > rest": {
-		"HeightThreshold_type": "PValueUncorrected",
-		"HeightThreshold_value": "0.001",
-		"ExtentThreshold_type": "obo_statistic",
-		"ExtentThreshold_value": "0",
-		"Inference_hasAlternativeHypothesis": "OneTailedTest",
-		"ExcursionSetMap_location": "/Users/thresh.nii.gz",
-		"Clusters": {
-			"Cluster-1":{
-				"Cluster_sizeInVoxels": "12",
-				"Cluster_sizeInResels": "1",
-				"Peaks: {
-
-
+	"nidm_DesignMatrix/prov:atLocation": "./DesignMatrix.csv",
+	"nidm_DesignMatrix/nidm_hasHRFBasis": ["fsl_FSLsGammaHRF"],
+	"nidm_DesignMatrix/nidm_hasDriftModel/prov:type": "fsl_GaussianRunningLineDriftModel",
+	"nidm_ErrorModel/nidm_hasErrorDistribution": "obo_normaldistribution",
+	"nidm_ErrorModel/nidm_errorVarianceHomogeneous": true,
+	"nidm_ErrorModel/nidm_varianceMapWiseDependence" : "nidm_IndependentParameter",
+	"nidm_ErrorModel/nidm_hasErrorDependence": "obo_Toeplitzcovariancestructure",
+	// nidm_ErrorModel/nidm_dependenceMapWiseDependence should not be filled if nidm_hasErrorDependence
+	//"nidm_ErrorModel/nidm_dependenceMapWiseDependence" : 'nidm_IndependentParameter',
+	"nidm_ModelParameterEstimation/nidm_withEstimationMethod": "obo_generalizedleastsquaresestimation",
+	"ParameterEstimateMaps" :
+	{
+		"tone_counting": {
+			"nidm_ParameterEstimateMap/prov:atLocation" : "/Users/pe1.nii.gz",
+		},
+		"tone_counting_probe": {
+			"nidm_ParameterEstimateMap/prov:atLocation" : "/Users/pe2.nii.gz",
+	},
+	"nidm_ResidualMeanSquaresMap/prov:atLocation": "/Users/rms.nii.gz",
+	"nidm_MaskMap/prov:atLocation": "/Users/mask.nii.gz",
+	"nidm_GrandMeanMap/prov:atLocation": "/Users/grand_mean_map.nii.gz",
+	// optional
+	"nidm_ReselsPerVoxelMap/prov:atLocation": "/Users/rpv.nii.gz",
+	"Contrasts" : 
+	{
+		"tone counting vs baseline": {
+			"obo_contrastweightmatrix/prov:value" : [1, 0],
+			"nidm_ContrastMap/prov:atLocation": "/Users/con1.nii.gz",
+			"nidm_ContrastStandardErrorMap/prov:atLocation": "/Users/cstd1.nii.gz",
+			"StatisticMaps": {
+				"obo_tstatistic": {
+					"StatisticMap_atLocation": "/Users/tstat1.nii.gz",
+					"StatisticMap_errorDegreesOfFreedom": "72.999",
+				},
+				"obo_Zstatistic": {
+					"StatisticMap_atLocation": "/Users/zstat1.nii.gz",
+				},
+			}
+		},
+		"tone counting vs baseline (F)": {
+			"obo_contrastweightmatrix/prov:value" : [1, 0],
+			"nidm_ContrastMap/prov:atLocation": "/Users/con1.nii.gz",
+			"nidm_ContrastStandardErrorMap/prov:atLocation": "/Users/cstd1.nii.gz",
+			"StatisticMaps": {
+				"obo_Fstatistic": {
+					"StatisticMap_atLocation": "/Users/fstat1.nii.gz",
+					"StatisticMap_errorDegreesOfFreedom": "72.999",
+					"StatisticMap_effectDegreesOfFreedom": "1",
+				},
+				"obo_Zstatistic": {
+					"StatisticMap_atLocation": "/Users/zfstat1.nii.gz",
 				}
 			}
+		},
+	},
+	"Inferences": 
+	{
+		"nidm_ClusterDefinitionCriteria/nidm_hasConnectivityCriterion": "nidm_voxel26connected",
+		"listening > rest": {
+			"nidm_HeightThreshold/prov:type": "PValueUncorrected",
+			"nidm_HeightThreshold/prov:value": "0.001",
+			"nidm_ExtentThreshold/prov:type": "obo_statistic",
+			"nidm_ExtentThreshold/prov:value": "0",
+			"nidm_Inference/nidm_hasAlternativeHypothesis": "nidm_OneTailedTest",
+			"ExcursionSetMap_location": "/Users/thresh.nii.gz",
+			"Clusters": {
+				"Cluster-1": {
+					"Cluster_sizeInVoxels": "12",
+					"Cluster_sizeInResels": "1",
+					"Peaks": {
+						"Cluster_sizeInVoxels": "12",
+					},
+				},
+			},
+		},
+		"tone counting vs baseline (F)": {
+			"nidm_HeightThreshold/prov:type": "PValueUncorrected",
+			"nidm_HeightThreshold/prov:value": "0.001",
+			"nidm_ExtentThreshold/prov:type": "obo_statistic",
+			"nidm_ExtentThreshold/prov:value": "0",
+			"nidm_Inference/nidm_hasAlternativeHypothesis": "nidm_OneTailedTest",
+			"ExcursionSetMap_location": "/Users/thresh.nii.gz",
+			"Clusters": {
+				"Cluster-1":{
+					"Cluster_sizeInVoxels": "12",
+					"Cluster_sizeInResels": "1",
+					"Peaks: {
+
+
+					},
+				},
+			},
 		}
-	}
-}
-
-"contrasts" : {
-"contrast-1" {
-	"name"
-	"matrix"
-	"statType"
-
+	},
 }
