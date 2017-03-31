@@ -101,10 +101,69 @@
 			"nidm_HeightThreshold/prov:type": "PValueUncorrected",
 			"nidm_HeightThreshold/prov:value": "0.001",
 			"nidm_ExtentThreshold/prov:type": "obo_statistic",
-			"nidm_ExtentThreshold/prov:value": "0",
-			"nidm_Inference/nidm_hasAlternativeHypothesis": "nidm_OneTailedTest",
-			"nidm_ExcursionSetMap/prov:atLocation": "/Users/thresh.nii.gz",
+			"nidm_ExtentThreshold/nidm_clusterSizeInVoxels": "0",
 
+			// optional
+			"nidm_ExtentThreshold/nidm_clusterSizeInResels": "0",
+
+			// optional
+			"nidm_HeightThreshold/nidm_equivalentThreshold": {
+				"p<0.0545 unc": {
+					"nidm_HeightThreshold/prov:type": "PValueUncorrected",
+					"nidm_HeightThreshold/prov:value": "0.001",
+				}
+				"p<0.0545 unc": {
+					"nidm_HeightThreshold/prov:type": "PValueUncorrected",
+					"nidm_HeightThreshold/prov:value": "0.001",
+				}
+			}
+			// optional
+			"nidm_ExtentThreshold/nidm_equivalentThreshold": {
+				"p<0.0545 unc": {
+					"nidm_ExtentThreshold/prov:type": "obo_statistic",
+					"nidm_ExtentThreshold/prov:value": "0",
+				}
+				"p<0.0545 unc": {
+					"nidm_ExtentThreshold/prov:type": "obo_statistic",
+					"nidm_ExtentThreshold/prov:value": "0",
+				}
+			}
+
+
+			"nidm_Inference/nidm_hasAlternativeHypothesis": "nidm_OneTailedTest",
+
+
+			// todo conjunctions
+
+			// optional
+			"nidm_DisplayMaskMap/prov:atLocation": "/Users/my_mask.nii.gz",
+			// optional
+			"nidm:SubVolumeMap/prov:atLocation": "/Users/my_mask.nii.gz",
+
+			// todo searchspacemap
+			"nidm_SearchSpaceMaskMap/prov:atLocation": "uri(spm_file(files.searchspace,'cpath'))",
+			"nidm_SearchSpaceMaskMap/nidm_searchVolumeInVoxels": 5452552,
+			"nidm_SearchSpaceMaskMap/nidm_searchVolumeInUnits": 546545,
+			"nidm_SearchSpaceMaskMap/nidm_reselSizeInVoxels": 64565,
+			// optional
+			"nidm_SearchSpaceMaskMap/nidm_searchVolumeInResels": 64565,
+			// SPM only
+			"nidm_SearchSpaceMaskMap/spm_searchVolumeReselsGeometry": [45 45 7 5],
+			"nidm_SearchSpaceMaskMap/nidm_noiseFWHMInVoxels": [6 6 6],
+			"nidm_SearchSpaceMaskMap/nidm_noiseFWHMInUnits": [5.5 5.5 5.5],
+			"nidm_SearchSpaceMaskMap/nidm_randomFieldStationarity": true,
+			// optional
+			"nidm_SearchSpaceMaskMap/nidm_expectedNumberOfVoxelsPerCluster": 65456,
+			"nidm_SearchSpaceMaskMap/nidm_expectedNumberOfClusters": 56554,
+			"nidm_SearchSpaceMaskMap/nidm_heightCriticalThresholdFWE05": 52.55,
+			"nidm_SearchSpaceMaskMap/nidm_heightCriticalThresholdFDR05": 54.25,
+			// optional
+			"nidm_SearchSpaceMaskMap/spm_smallestSignificantClusterSizeInVoxelsFWE05": 56454.25,
+			// optional
+			"nidm_SearchSpaceMaskMap/spm_smallestSignificantClusterSizeInVoxelsFDR05": 56457.25,
+
+
+			"nidm_ExcursionSetMap/prov:atLocation": "/Users/thresh.nii.gz",
 			"Clusters": {
 				"1": {
 					"nidm_SupraThresholdCluster/nidm_clusterSizeInVoxels": "12",
