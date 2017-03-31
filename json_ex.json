@@ -6,12 +6,8 @@
 	// Groups is optional > no "Groups" means single-subject analysis
 	"Groups" :
 	{
-		"Control": {
-			"obo_studygrouppopulation/nidm_numberOfSubjects": "23",
-		},
-		"Patient": {
-			"obo_studygrouppopulation/nidm_numberOfSubjects": "21",	
-		}
+		"Control": 23,
+		"Patient": 21
 	},
 
 	// *** Usually Retreived automatically
