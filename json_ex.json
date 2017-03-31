@@ -164,6 +164,11 @@
 
 
 			"nidm_ExcursionSetMap/prov:atLocation": "/Users/thresh.nii.gz",
+// and also nidm_numberOfSupraThresholdClusters clusterlabelmap MIP
+			
+			// optional
+			"nidm_ClusterLabelsMap/prov:atLocation": "/Users/thresh.nii.gz",
+
 			"Clusters": {
 				"1": {
 					"nidm_SupraThresholdCluster/nidm_clusterSizeInVoxels": "12",
