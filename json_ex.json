@@ -42,11 +42,8 @@
 	// ------
 	"ParameterEstimateMaps" :
 	{
-		"tone_counting": {
-			"nidm_ParameterEstimateMap/prov:atLocation" : "/Users/pe1.nii.gz",
-		},
-		"tone_counting_probe": {
-			"nidm_ParameterEstimateMap/prov:atLocation" : "/Users/pe2.nii.gz",
+		"tone_counting": "/Users/pe1.nii.gz",
+		"tone_counting_probe": "/Users/pe2.nii.gz",
 	},
 	"nidm_ResidualMeanSquaresMap/prov:atLocation": "/Users/rms.nii.gz",
 
