@@ -1,4 +1,18 @@
 {
+	"nidm_NeuroimagingAnalysisSoftware/prov:type": "SPM",
+	"nidm_NeuroimagingAnalysisSoftware/nidm_softwareVersion": "8.6325",
+
+	"nidm_NIDMResultsExporter/prov:type": "nidmfsl",
+	"nidm_NIDMResultsExporter/nidm_softwareVersion": "0.2.0",
+
+	"nidm_NIDMResults/nidm_version": "1.1.0",
+
+
+	"nidm_DesignMatrix/nidm_hasDriftModel": "spm_DiscreteCosineTransformbasisDriftModel",
+	"nidm_DriftModel/spm_SPMsDriftCutoffPeriod": "128",
+
+	"nidm_Data/nidm_hasMRIProtocol": "nlx_FunctionalMRIprotocol",
+
 	// *** Need to ask the user
 	"nidm_Data/nidm_hasMRIProtocol": "nlx_FunctionalMRIprotocol",
 	// not needed since we can deduce from protocol:
@@ -28,6 +42,7 @@
 	// Only for first-level models
 	"nidm_DesignMatrix/nidm_hasHRFBasis": ["fsl_FSLsGammaHRF"],
 	"nidm_DesignMatrix/nidm_hasDriftModel/prov:type": "fsl_GaussianRunningLineDriftModel",
+	"nidm_DesignMatrix/nidm_regressorNames": 
 
 
 	"nidm_ErrorModel/nidm_hasErrorDistribution": "obo_normaldistribution",
@@ -52,8 +67,14 @@
 	// for SnPM deduce from resm
 	"nidm_MaskMap/prov:atLocation": "/Users/mask.nii.gz",
 
+	// Rename according to spec
+	"nidm_CustomMap/prov:atLocation": "/Users/mask.nii.gz",
+
 	// optional
 	"nidm_ReselsPerVoxelMap/prov:atLocation": "/Users/rpv.nii.gz",
+
+	// Everything in same coord space
+	"nidm_CoordinateSpace/nidm_inWorldCoordinateSystem": "nidm_Ixi549CoordinateSystem",
 
 	"Contrasts" : 
 	{
@@ -89,13 +110,21 @@
 			"nidm_ContrastMap/nidm_contrastName": "tone counting vs baseline",
 			},
 	},
+	"nidm_ClusterDefinitionCriteria/nidm_hasConnectivityCriterion": "nidm_voxel26connected",
+	"nidm_PeakDefinitionCriteria/nidm_minDistanceBetweenPeaks": "8.0",
+	// optional
+	"nidm_PeakDefinitionCriteria/nidm_maxNumberOfPeaksPerCluster": "3",
+
+	"ConjunctionInferences": 
+	{
+		"ConjunctionInference-1": {
+			"nidm_contrastName": ["Contrast_1", "Contrast_2"],
+			"nidm_Inference/prov:type": "nidm_ConjunctionInference",
+		}
+	},
+	
 	"Inferences": 
 	{
-		"nidm_ClusterDefinitionCriteria/nidm_hasConnectivityCriterion": "nidm_voxel26connected",
-		"nidm_PeakDefinitionCriteria/nidm_minDistanceBetweenPeaks": "8.0",
-		// optional
-		"nidm_PeakDefinitionCriteria/nidm_maxNumberOfPeaksPerCluster": "3",
-
 		// we assume we will only have one thresholding procedure for a given contrast
 		"Contrast_1": {
 			"nidm_HeightThreshold/prov:type": "PValueUncorrected",
@@ -136,7 +165,7 @@
 			// todo conjunctions
 
 			// optional
-			"nidm_DisplayMaskMap/prov:atLocation": "/Users/my_mask.nii.gz",
+			"nidm_DisplayMaskMap/prov:atLocation": ["/Users/my_mask.nii.gz"],
 			// optional
 			"nidm:SubVolumeMap/prov:atLocation": "/Users/my_mask.nii.gz",
 
@@ -164,7 +193,8 @@
 
 
 			"nidm_ExcursionSetMap/prov:atLocation": "/Users/thresh.nii.gz",
-// and also nidm_numberOfSupraThresholdClusters clusterlabelmap MIP
+			"nidm_ExcursionSetMap/nidm_hasMaximumIntensityProjection": "/Users/MIP.png",
+// and also nidm_numberOfSupraThresholdClusters  
 			
 			// optional
 			"nidm_ClusterLabelsMap/prov:atLocation": "/Users/thresh.nii.gz",
@@ -192,20 +222,19 @@
 					},
 				},
 			},
+				// Extension for non-parametric statistics - true for all contrasts ??
+			"nidm_NonParametricNullDistribution/nidm_numberOfPermutations": "5000",
+			"nidm_NonParametricNullDistribution/nidm_hasResamplingScheme": "nidm_Permutation",
+			"nidm_NonParametricNullDistribution/nidm_hasApproximationMethod": "nidm_MonteCarlo",
+			"nidm_NonParametricNullDistribution/nidm_maximumNumberOfPermutations": "12345",
+
+			// first-level only
+			"nidm_NonParametricNullDistribution/nidm_exchangeabilityBlocks": [1 1 1 2 2 2 3 3 3],
+			"nidm_NonParametricNullDistribution/nidm_exchangeabilityWithin": true,
 		},
 		"Contrast_2": {
 
 		},
-
-		// Extension for non-parametric statistics - true for all contrasts ??
-		"nidm_NonParametricNullDistribution/nidm_numberOfPermutations": "5000",
-		"nidm_NonParametricNullDistribution/nidm_hasResamplingScheme": "nidm_Permutation",
-		"nidm_NonParametricNullDistribution/nidm_hasApproximationMethod": "nidm_MonteCarlo",
-		"nidm_NonParametricNullDistribution/nidm_maximumNumberOfPermutations": "12345",
-
-		// first-level only
-		"nidm_NonParametricNullDistribution/nidm_exchangeabilityBlocks": [1 1 1 2 2 2 3 3 3],
-		"nidm_NonParametricNullDistribution/nidm_exchangeabilityWithin": true,
 
 	},
 }
