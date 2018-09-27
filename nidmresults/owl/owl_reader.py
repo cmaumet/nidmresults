@@ -855,13 +855,14 @@ class OwlReader():
         label = str(self.graph.label(uri))
         idt = str(self.graph.qname(uri).split(":")[1])
 
+        # m = re.search(r'\d+$', idt)
+        # is_alphanumeric = (m is not None)
+
         if label == idt:
-            # For text identifiers there is no preferred prefix (we can just
-            # keep the id directly)
+            # For non alpahnumeric identifiers we can just keep the id directly
             prefix_name = None
         else:
             label = self.get_label(uri).replace("'", "")
-
             prefix, words = label.split(':')
             label_words = re.findall(r"[\w']+", words)
 
@@ -916,3 +917,32 @@ class OwlReader():
 
                 if prefix is not None and not self.is_deprecated(s):
                     writer.writerow([self.graph.qname(s), prefix, s])
+
+    # This was used to copy all the preferred prefixes as skos:label but is not
+    # used routinely to generate new prefixes (those will have to be added
+    # manually
+    def prefixes_in_owl_file(self):
+        sep = \
+            '#################################################################'
+
+        with open(self.file, 'r') as fp:
+            owl_txt = fp.read()
+        # For anything that has a label
+        for s, o in sorted(self.graph.subject_objects(RDFS['label'])):
+            try:
+                self.graph.qname(s)
+            except Exception:
+                # Some URIs don't have qname
+                # (e.g. http://www.w3.org/ns/prov-o#)
+                continue
+            prefix = self.get_preferred_prefix(s)
+
+            if prefix is not None:
+                # Add prefix as preferred label in the owl file
+                preflabel = str('<' + str(s) + '> ' +
+                                '<' + str(SKOS.prefLabel) + '> ' +
+                                '"' + prefix + '" . \n')
+                owl_txt = owl_txt.replace(sep, preflabel + sep, 1)
+
+        with open(self.file, 'w') as fp:
+            fp.write(owl_txt)
