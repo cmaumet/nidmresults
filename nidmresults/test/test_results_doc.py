@@ -339,7 +339,7 @@ class TestResultDataModel(object):
                     in_other.remove((s, p, o_other))
                     break
             else:
-                if (p not in to_ignore):
+                if (to_ignore is not None) and (p not in to_ignore):
                     exc_missing.append(
                         "\nMissing :\t '%s %s %s'"
                         % (
